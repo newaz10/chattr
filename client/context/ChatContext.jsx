@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+
 import {
   createContext,
   useContext,
@@ -81,11 +82,12 @@ export const ChatProvider = ({ children }) => {
           `/api/messages/send/${selectedUserRef.current._id}`,
           messageData
         );
+        getUsers();
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to send message");
       }
     },
-    [axios]
+    [axios, getUsers]
   );
 
   useEffect(() => {
@@ -102,6 +104,8 @@ export const ChatProvider = ({ children }) => {
         ...prev,
         [chatUserId]: [...(prev[chatUserId] || []), newMessage],
       }));
+
+      getUsers();
 
       if (
         selectedUserRef.current &&
@@ -144,7 +148,7 @@ export const ChatProvider = ({ children }) => {
       socket.off("newMessage", handleNewMessage);
       socket.off("messageDeleted", handleMessageDeleted);
     };
-  }, [socket, authUser, axios]);
+  }, [socket, authUser, axios, getUsers]);
 
   useEffect(() => {
     if (!selectedUser) {
@@ -153,6 +157,12 @@ export const ChatProvider = ({ children }) => {
       getMessages(selectedUser._id);
     }
   }, [selectedUser, getMessages]);
+
+  useEffect(() => {
+    if (authUser) {
+      getUsers();
+    }
+  }, [authUser, getUsers]);
 
   useEffect(() => {
     const handleClearCache = () => {

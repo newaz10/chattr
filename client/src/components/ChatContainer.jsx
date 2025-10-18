@@ -1,5 +1,3 @@
-// client\src\components\ChatContainer.jsx
-
 import React, {
   useContext,
   useEffect,
@@ -28,7 +26,7 @@ const ChatContainer = () => {
   const messagesContainerRef = useRef();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isSending, setIsSending] = useState(false); // 👈 নতুন স্টেট
+  const [isSending, setIsSending] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
@@ -54,15 +52,15 @@ const ChatContainer = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (input.trim() === "" || isSending) return; // 👈 ডুপ্লিকেট প্রিভেনশন
+    if (input.trim() === "" || isSending) return;
 
-    setIsSending(true); // 👈 লোডিং শুরু
+    setIsSending(true);
     try {
       await sendMessage({ text: input.trim() });
       setInput("");
       scrollToBottom();
     } finally {
-      setIsSending(false); // 👈 লোডিং শেষ (error হলেও)
+      setIsSending(false);
     }
   };
 
@@ -325,7 +323,7 @@ const ChatContainer = () => {
               value={input}
               type="text"
               placeholder="Send a message"
-              disabled={isSending} // 👈 অপশনাল: ইনপুট ডিসেবল করুন
+              disabled={isSending}
               className="flex-1 text-sm p-3 bg-transparent border-none rounded-lg outline-none text-white placeholder-gray-400"
             />
             <input
@@ -345,7 +343,7 @@ const ChatContainer = () => {
           </div>
           <button
             type="submit"
-            disabled={!input.trim() || isSending} // 👈 এখানে isSending যোগ করা হয়েছে
+            disabled={!input.trim() || isSending}
             className={`p-2 rounded-full ${
               input.trim() && !isSending ? "bg-violet-600" : "bg-gray-600"
             }`}
