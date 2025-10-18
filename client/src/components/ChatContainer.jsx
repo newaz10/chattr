@@ -1,3 +1,5 @@
+// client\src\components\ChatContainer.jsx
+
 import React, {
   useContext,
   useEffect,
@@ -26,6 +28,7 @@ const ChatContainer = () => {
   const messagesContainerRef = useRef();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false); // 👈 নতুন স্টেট
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
@@ -51,10 +54,16 @@ const ChatContainer = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (input.trim() === "") return;
-    await sendMessage({ text: input.trim() });
-    setInput("");
-    scrollToBottom();
+    if (input.trim() === "" || isSending) return; // 👈 ডুপ্লিকেট প্রিভেনশন
+
+    setIsSending(true); // 👈 লোডিং শুরু
+    try {
+      await sendMessage({ text: input.trim() });
+      setInput("");
+      scrollToBottom();
+    } finally {
+      setIsSending(false); // 👈 লোডিং শেষ (error হলেও)
+    }
   };
 
   const handleSendImage = async (e) => {
@@ -316,6 +325,7 @@ const ChatContainer = () => {
               value={input}
               type="text"
               placeholder="Send a message"
+              disabled={isSending} // 👈 অপশনাল: ইনপুট ডিসেবল করুন
               className="flex-1 text-sm p-3 bg-transparent border-none rounded-lg outline-none text-white placeholder-gray-400"
             />
             <input
@@ -335,9 +345,9 @@ const ChatContainer = () => {
           </div>
           <button
             type="submit"
-            disabled={!input.trim()}
+            disabled={!input.trim() || isSending} // 👈 এখানে isSending যোগ করা হয়েছে
             className={`p-2 rounded-full ${
-              input.trim() ? "bg-violet-600" : "bg-gray-600"
+              input.trim() && !isSending ? "bg-violet-600" : "bg-gray-600"
             }`}
           >
             <img src={assets.send_button} alt="Send" className="w-5 h-5" />
