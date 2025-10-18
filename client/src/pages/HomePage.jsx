@@ -5,7 +5,7 @@ import RightSidebar from "../components/RightSidebar";
 import { ChatContext } from "../../context/ChatContext";
 
 const HomePage = () => {
-  const { selectedUser } = useContext(ChatContext);
+  const { selectedUser, isRightSidebarOpen } = useContext(ChatContext);
 
   return (
     <div className="w-full h-screen sm:px-[15%] sm:py-[5%]">
@@ -18,10 +18,13 @@ const HomePage = () => {
           }
           ${
             selectedUser
-              ? "md:grid-cols-[1fr_1.5fr_1fr] xl:grid-cols-[1fr_2fr_1fr]"
+              ? isRightSidebarOpen
+                ? "md:grid-cols-[1fr_1.2fr_1fr] xl:grid-cols-[1fr_1.5fr_1fr]"
+                : "md:grid-cols-[1fr_2fr]"
               : "md:grid-cols-2"
           }`}
       >
+        {/* Sidebar */}
         <div
           className={`${
             selectedUser ? "hidden sm:block" : ""
@@ -30,11 +33,13 @@ const HomePage = () => {
           <Sidebar />
         </div>
 
+        {/* ChatContainer */}
         <div className="h-full overflow-hidden">
           <ChatContainer />
         </div>
 
-        {selectedUser && (
+        {/* RightSidebar — only rendered when open */}
+        {selectedUser && isRightSidebarOpen && (
           <div className="hidden sm:block h-full overflow-hidden border-l border-gray-600">
             <RightSidebar />
           </div>

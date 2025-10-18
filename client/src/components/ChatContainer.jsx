@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { useContext, useEffect, useRef, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import assets from "../assets/assets";
 import { formatMessageTime } from "../lib/utils";
@@ -20,9 +14,9 @@ const ChatContainer = () => {
     sendMessage,
     getMessages,
     deleteMessage,
+    toggleRightSidebar,
   } = useContext(ChatContext);
   const { authUser, onlineUsers } = useContext(AuthContext);
-
   const messagesContainerRef = useRef();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +39,6 @@ const ChatContainer = () => {
     if (messagesContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } =
         messagesContainerRef.current;
-
       setShowScrollButton(scrollHeight - scrollTop - clientHeight > 100);
     }
   }, []);
@@ -53,7 +46,6 @@ const ChatContainer = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (input.trim() === "" || isSending) return;
-
     setIsSending(true);
     try {
       await sendMessage({ text: input.trim() });
@@ -70,7 +62,6 @@ const ChatContainer = () => {
       toast.error("Select an image file");
       return;
     }
-
     const reader = new FileReader();
     reader.onloadend = async () => {
       await sendMessage({ image: reader.result });
@@ -104,11 +95,11 @@ const ChatContainer = () => {
       setShowMobileMenu(true);
     }, 500);
   };
+
   const handleTouchEnd = () => {
     clearTimeout(longPressTimer);
   };
 
-  // Handle ESC key to close modals
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") {
@@ -134,7 +125,6 @@ const ChatContainer = () => {
     }
   }, [selectedUser, getMessages, scrollToBottom]);
 
-  // Scroll when messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
@@ -170,10 +160,10 @@ const ChatContainer = () => {
         <img
           src={assets.help_icon}
           alt=""
-          className="hidden md:block max-w-5"
+          className="hidden md:block max-w-5 cursor-pointer"
+          onClick={toggleRightSidebar}
         />
       </div>
-
       <div
         ref={messagesContainerRef}
         onScroll={handleScroll}
@@ -292,7 +282,6 @@ const ChatContainer = () => {
           );
         })}
       </div>
-
       {showScrollButton && (
         <button
           onClick={scrollToBottom}
@@ -314,7 +303,6 @@ const ChatContainer = () => {
           </svg>
         </button>
       )}
-
       <div className="p-3 border-t border-gray-600 bg-gray-900/80">
         <form onSubmit={handleSendMessage} className="flex items-center gap-3">
           <div className="flex-1 flex items-center bg-gray-700 px-3 rounded-full">
@@ -352,7 +340,6 @@ const ChatContainer = () => {
           </button>
         </form>
       </div>
-
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-72 text-center">
@@ -374,7 +361,6 @@ const ChatContainer = () => {
           </div>
         </div>
       )}
-
       {showMobileMenu && mobileMenuMsg && (
         <div
           className="fixed inset-0 z-50 flex items-end md:hidden bg-black/40"

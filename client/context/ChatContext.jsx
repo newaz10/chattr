@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-
 import {
   createContext,
   useContext,
@@ -19,12 +18,17 @@ export const ChatProvider = ({ children }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [unseenMessages, setUnseenMessages] = useState({});
   const [messageCache, setMessageCache] = useState({});
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const { socket, axios, authUser } = useContext(AuthContext);
-
   const selectedUserRef = useRef(selectedUser);
+
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
+
+  const toggleRightSidebar = () => {
+    setIsRightSidebarOpen((prev) => !prev);
+  };
 
   const getMessages = useCallback(
     async (userId) => {
@@ -92,21 +96,17 @@ export const ChatProvider = ({ children }) => {
 
   useEffect(() => {
     if (!socket || !authUser) return;
-
     const handleNewMessage = (newMessage) => {
       const currentUserId = authUser._id;
       const chatUserId =
         newMessage.sender === currentUserId
           ? newMessage.receiver
           : newMessage.sender;
-
       setMessageCache((prev) => ({
         ...prev,
         [chatUserId]: [...(prev[chatUserId] || []), newMessage],
       }));
-
       getUsers();
-
       if (
         selectedUserRef.current &&
         selectedUserRef.current._id === chatUserId
@@ -123,7 +123,6 @@ export const ChatProvider = ({ children }) => {
         }));
       }
     };
-
     const handleMessageDeleted = (deletedMsg) => {
       setMessages((prev) =>
         prev.map((msg) => (msg._id === deletedMsg._id ? deletedMsg : msg))
@@ -140,10 +139,8 @@ export const ChatProvider = ({ children }) => {
         return updated;
       });
     };
-
     socket.on("newMessage", handleNewMessage);
     socket.on("messageDeleted", handleMessageDeleted);
-
     return () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("messageDeleted", handleMessageDeleted);
@@ -226,6 +223,8 @@ export const ChatProvider = ({ children }) => {
     unseenMessages,
     setUnseenMessages,
     deleteMessage,
+    isRightSidebarOpen,
+    toggleRightSidebar,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
