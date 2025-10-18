@@ -1,0 +1,11 @@
+# Global ignores
+node_modules/
+dist/
+.env
+.env.local
+.DS_Store
+.vscode/
+logs/
+*.log
+.cache/
+*.tsbuildinfo
