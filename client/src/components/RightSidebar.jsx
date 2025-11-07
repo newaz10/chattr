@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import assets from "../assets/assets";
 import { ChatContext } from "../../context/ChatContext";
 import { AuthContext } from "../../context/AuthContext";
@@ -36,9 +36,15 @@ const RightSidebar = () => {
       <hr className="border-[#ffffff50] my-4" />
 
       {/* Media Section */}
-      <div className="px-5 text-xs flex-1 overflow-y-auto">
-        <p>Media</p>
+      <div className="px-5 text-sm flex-1 overflow-y-auto">
+        <p>Shared Media: </p>
         <div className="mt-2 max-h-[200px] overflow-y-auto grid grid-cols-2 gap-4 opacity-80">
+          {msgImages.length === 0 && (
+            <p className="text-start col-span-2 text-xs opacity-50">
+              No media shared yet!
+            </p>
+          )}
+
           {msgImages.map((url, index) => (
             <div
               key={index}
