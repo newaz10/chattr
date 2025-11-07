@@ -183,24 +183,34 @@ const ChatContainer = () => {
               }
               onTouchEnd={isSender && !isDeleted ? handleTouchEnd : undefined}
             >
+              {!isSender && (
+                <img
+                  src={selectedUser?.profilePic || assets.avatar_icon}
+                  alt=""
+                  className="w-7 h-7 rounded-full"
+                />
+              )}
               {isDeleted ? (
-                <div className="flex flex-col items-end w-full">
+                <div className="flex flex-col items-start w-full">
                   <div className="italic text-xs text-gray-400 bg-gray-800/70 rounded px-3 py-2 select-none">
                     This message was deleted
                   </div>
                 </div>
               ) : msg.image ? (
-                <div className="flex flex-col items-end relative group">
+                <div className="flex flex-col relative group">
                   <img
                     src={msg.image}
                     alt=""
                     className="max-w-[230px] border border-gray-700 rounded-lg overflow-hidden"
                   />
-                  {isSender && (
-                    <span className="text-[10px] text-gray-400 mt-1">
-                      {msg.seen ? "Seen" : ""}
-                    </span>
-                  )}
+                  <div
+                    className={`text-[10px] text-gray-400 mt-1 ${
+                      isSender ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {formatMessageTime(msg.createdAt)}
+                    {isSender && msg.seen && <span className="ml-2">Seen</span>}
+                  </div>
                   {isSender && !isDeleted && (
                     <button
                       className="absolute top-1 right-1 p-1 text-gray-400 hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -225,7 +235,7 @@ const ChatContainer = () => {
                   )}
                 </div>
               ) : (
-                <div className="flex flex-col items-end relative group">
+                <div className="flex flex-col relative group">
                   <p
                     className={`p-2 max-w-[200px] md:max-w-[300px] text-sm font-light rounded-lg break-all ${
                       isSender
@@ -235,11 +245,14 @@ const ChatContainer = () => {
                   >
                     {msg.text}
                   </p>
-                  {isSender && (
-                    <span className="text-[10px] text-gray-400 mt-1">
-                      {msg.seen ? "Seen" : ""}
-                    </span>
-                  )}
+                  <div
+                    className={`text-[10px] text-gray-400 mt-1 ${
+                      isSender ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {formatMessageTime(msg.createdAt)}
+                    {isSender && msg.seen && <span className="ml-2">Seen</span>}
+                  </div>
                   {isSender && !isDeleted && (
                     <button
                       className="absolute top-1 right-1 p-1 text-gray-400 hover:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -264,20 +277,13 @@ const ChatContainer = () => {
                   )}
                 </div>
               )}
-              <div className="flex flex-col items-center">
+              {isSender && (
                 <img
-                  src={
-                    isSender
-                      ? authUser?.profilePic || assets.avatar_icon
-                      : selectedUser?.profilePic || assets.avatar_icon
-                  }
+                  src={authUser?.profilePic || assets.avatar_icon}
                   alt=""
                   className="w-7 h-7 rounded-full"
                 />
-                <p className="text-xs text-gray-400 mt-1">
-                  {formatMessageTime(msg.createdAt)}
-                </p>
-              </div>
+              )}
             </div>
           );
         })}
