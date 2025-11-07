@@ -58,7 +58,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl">
-      <img src={assets.logo_big} alt="" className="w-[min(30vw,250px)]" />
+      <img src={assets.logo_big} alt="logo" className="w-[min(30vw,250px)]" />
       <form
         onSubmit={onSubmitHandler}
         className="border-2 bg-white/8 text-white border-gray-500 p-6 flex flex-col gap-6 rounded-lg shadow-lg"
@@ -117,13 +117,6 @@ const LoginPage = () => {
           ></textarea>
         )}
 
-        <button
-          type="submit"
-          className="py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer"
-        >
-          {currState === "Sign Up" ? "Create Account" : "Login"}
-        </button>
-
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <input
             type="checkbox"
@@ -132,6 +125,13 @@ const LoginPage = () => {
           />
           <p>I Agree to the terms of use & privacy policy</p>
         </div>
+
+        <button
+          type="submit"
+          className="py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer"
+        >
+          {currState === "Sign Up" ? "Create Account" : "Login"}
+        </button>
 
         <div className="flex flex-col gap-2">
           {currState === "Sign Up" ? (
