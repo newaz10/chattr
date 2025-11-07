@@ -8,7 +8,7 @@ const HomePage = () => {
   const { selectedUser, isRightSidebarOpen } = useContext(ChatContext);
 
   return (
-    <div className="w-full h-screen sm:px-[15%] sm:py-[5%]">
+    <div className="w-full h-screen sm:px-[10%] sm:py-[5%]">
       <div
         className={`backdrop-blur-xl border-2 border-gray-600 rounded-2xl overflow-hidden h-full grid grid-cols-1 relative
           ${

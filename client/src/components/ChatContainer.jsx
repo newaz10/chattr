@@ -190,13 +190,7 @@ const ChatContainer = () => {
                   className="w-7 h-7 rounded-full"
                 />
               )}
-              {isDeleted ? (
-                <div className="flex flex-col items-start w-full">
-                  <div className="italic text-xs text-gray-400 bg-gray-800/70 rounded px-3 py-2 select-none">
-                    This message was deleted
-                  </div>
-                </div>
-              ) : msg.image ? (
+              {!isDeleted && msg.image ? (
                 <div className="flex flex-col relative group">
                   <img
                     src={msg.image}
@@ -209,7 +203,6 @@ const ChatContainer = () => {
                     }`}
                   >
                     {formatMessageTime(msg.createdAt)}
-                    {isSender && msg.seen && <span className="ml-2">Seen</span>}
                   </div>
                   {isSender && !isDeleted && (
                     <button
@@ -234,7 +227,7 @@ const ChatContainer = () => {
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : !isDeleted ? (
                 <div className="flex flex-col relative group">
                   <p
                     className={`p-2 max-w-[200px] md:max-w-[300px] text-sm font-light rounded-lg break-all ${
@@ -251,7 +244,6 @@ const ChatContainer = () => {
                     }`}
                   >
                     {formatMessageTime(msg.createdAt)}
-                    {isSender && msg.seen && <span className="ml-2">Seen</span>}
                   </div>
                   {isSender && !isDeleted && (
                     <button
@@ -276,8 +268,8 @@ const ChatContainer = () => {
                     </div>
                   )}
                 </div>
-              )}
-              {isSender && (
+              ) : null}
+              {isSender && !isDeleted && (
                 <img
                   src={authUser?.profilePic || assets.avatar_icon}
                   alt=""
