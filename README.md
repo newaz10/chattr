@@ -6,6 +6,13 @@ A sleek, modern real-time chat application built with the **MERN** stack and **S
 
 [Live Demo](https://chattr-chat.vercel.app)
 
+### 🔐 Test Credentials (for demo purposes)
+
+- **Email:** `test@chattr.com`
+- **Password:** `123456`
+
+> Note: This account is for demonstration only.
+
 ---
 
 ## Features
