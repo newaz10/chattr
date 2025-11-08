@@ -2,7 +2,7 @@
 
 A sleek, modern real-time chat application built with the **MERN** stack and **Socket.IO**, optimized for both performance and visual appeal.
 
-![Chattr Preview](./public/sample.jpg)
+![Chattr Preview](./client/public/sample.jpg)
 
 [Live Demo](https://chattr-chat.vercel.app)
 
