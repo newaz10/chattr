@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://chattr-newaz.vercel.app"],
+  origin: ["http://localhost:5173", "https://chattr-chat.vercel.app"],
   credentials: true,
   optionsSuccessStatus: 200,
 };
